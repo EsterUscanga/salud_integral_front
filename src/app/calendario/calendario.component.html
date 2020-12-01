@@ -1,0 +1,35 @@
+<div class="calendar">
+    <div class="calendar-nav">
+        <div class="calendar-nav-previous-month">
+            <button class="button is-text" (click)="navegarMes(-1, 'month')" [disabled]="!puedeNavegarMes(-1)">
+                <fa-icon [icon]="faChevronLeft"></fa-icon>
+            </button>
+        </div>
+        <div>{{loCalendarioValores.format('MMMM YYYY')}}</div>
+        <div class="calendar-nav-next-month">
+            <button class="button is-text" (click)="navegarMes(1, 'month')" [disabled]="!puedeNavegarMes(1)">
+                <fa-icon [icon]="faChevronRight"></fa-icon>
+            </button>
+        </div>
+    </div>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <div class="calendar-date" *ngFor="let dia of cabeceraDiasSemanaArreglo">
+                {{dia}}
+            </div>
+        </div>
+        <div class="calendar-body">
+            <div *ngFor= "let dia of cuadriculaArreglo; let i = index" 
+                 class="calendar-date" 
+                 [class.is-disabled]="!dia.disponible" 
+                 [class.calendar-range]="loRangoFechaSeleccionada.length > 1 && dia.seleccionado" 
+                 [class.calendar-range-start]="loRangoFechaSeleccionada.length > 1  && dia.primerDia" 
+                 [class.calendar-range-end]="dia.ultimoDia">
+                <button *ngIf="dia.valor !== 0" class="date-item" 
+                        [class.is-active]="dia.primerDia || dia.ultimoDia" 
+                        (click)="seleccionarDia(dia, i)">{{dia.valor}}</button>
+                <button *ngIf="dia.valor === 0" class="date-item"></button>
+            </div>
+        </div>
+    </div>
+</div>

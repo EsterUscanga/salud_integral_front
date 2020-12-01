@@ -1,0 +1,126 @@
+<div class="container">
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">Matrícula (alumno) ID (Docente/Admin)</label>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="160516" maxlength="6" minlength="6" required
+                            [(ngModel)]="loValorMatricula">
+                            <p class="help is-danger" *ngIf="matriculaIncompleta">Matrícula o ID deben tener 6 dígitos</p>
+                            <p class="help is-danger" *ngIf="matriculaNoExiste">Matrícula o ID no existe</p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="obtenerDetallesUsuarioPorMatricula()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faSearch"></fa-icon>
+                                </span>
+                                <span>Buscar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="detallesBandera">
+                <div class="field">
+                    <label class="label">Área</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorAreaUsuario" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Sexo</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorSexo" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Nombre</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorNombre" disabled>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="column">
+            <div *ngIf="detallesBandera">
+
+                <div class="field">
+                    <label class="label">Talla</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorTalla" type="number" placeholder="Talla en metros">
+                        <p class="help is-danger" *ngIf="tallaIncorrecta">Es necesaria la talla en metros para calcular IMC</p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Peso</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorPeso" type="number" placeholder="Peso en kilogramos">
+                        <p class="help is-danger" *ngIf="pesoIncorrecto">Es necesario el peso en kilogramos para calcular IMC</p>
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <label class="label">IMC</label>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <input class="input" [ngModel]="loValorIMC" disabled>
+                        </div>
+                        <div class="control">
+                            <p class="buttons">
+                                <a class="button is-link" (click)="obtenerIMC()">
+                                    <span class="icon">
+                                        <fa-icon [icon]="faCalculator"></fa-icon>
+                                    </span>
+                                    <span>Calcular</span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control" *ngIf="loValorIMC">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="enviarFormularioAtencionNutricional()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                                </span>
+                                <span>Enviar</span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link is-light" (click)="limpiarValores()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faTrash"></fa-icon>
+                                </span>
+                                <span>Limpiar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification is-success is-light" *ngIf="mensajeSatisfactorio">
+        <button class="delete" (click)="cerrarNotificacion('satisfactoria')"></button>
+        {{loValorMensajeSatisfactorio}}
+    </div>
+      
+      
+    <div class="notification is-danger is-light" *ngIf="mensajeError">
+        <button class="delete" (click)="cerrarNotificacion('error')"></button>
+        {{loValorMensajeError}}
+    </div>
+
+</div>

@@ -1,0 +1,127 @@
+<div class="container">
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">Matrícula (alumno)</label>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="160516" maxlength="6" minlength="6" required
+                            [(ngModel)]="loValorMatricula">
+                        <p class="help is-danger" *ngIf="matriculaIncompleta">Matrícula o ID deben tener 6 dígitos</p>
+                        <p class="help is-danger" *ngIf="matriculaNoExiste">Matrícula o ID no existe</p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="obtenerDetallesUsuarioPorMatricula()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faSearch"></fa-icon>
+                                </span>
+                                <span>Buscar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="detallesBandera">
+                <div class="field">
+                    <label class="label">Área</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorAreaUsuario" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Nombre</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorNombre" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Cuatrimestre</label>
+                    <div [ngClass]="dropDownActivoCuatrimestre ? 'dropdown is-active' : 'dropdown'" >
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="cambiarEstatusDropdown('cuatrimestre')">
+                                <span *ngIf="!loValorCuatrimestre">Selecciona Cuatrimestre</span>
+                                <span *ngIf="loValorCuatrimestre">{{loValorCuatrimestre.texto}}</span>
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" *ngFor="let cuatrimestre of cuatrimestres; let i = index" [attr.data-index]="i" (click)="modificarValorDropdown(i, 'cuatrimestre')">
+                                    {{cuatrimestre}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+
+                <div class="field">
+                    <label class="label">Clasificación de la enfermedad</label>
+                    <div [ngClass]="dropDownActivoEnfermedad ? 'dropdown is-active' : 'dropdown'" >
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="cambiarEstatusDropdown('enfermedad')">
+                                <span *ngIf="!loValorEnfermedad">Selecciona Enfermedad</span>
+                                <span *ngIf="loValorEnfermedad">{{loValorEnfermedad.texto}}</span>
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" *ngFor="let enfermedad of enfermedades; let i = index" [attr.data-index]="i" (click)="modificarValorDropdown(i, 'enfermedad')">
+                                    {{enfermedad.nombre}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="field">
+                    <label class="label">Descripción detallada de la enfermedad</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="Describe detalladamente la enfermedad" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="enviarFormularioJustificacionFaltas()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                                </span>
+                                <span>Enviar</span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link is-light" (click)="limpiarValores()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faTrash"></fa-icon>
+                                </span>
+                                <span>Limpiar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-calendario></app-calendario>
+
+    <div class="notification is-success is-light" *ngIf="mensajeSatisfactorio">
+        <button class="delete" (click)="cerrarNotificacion('satisfactoria')"></button>
+        {{loValorMensajeSatisfactorio}}
+    </div>
+      
+      
+    <div class="notification is-danger is-light" *ngIf="mensajeError">
+        <button class="delete" (click)="cerrarNotificacion('error')"></button>
+        {{loValorMensajeError}}
+    </div>
+</div>
