@@ -14,4 +14,8 @@ export class UsuariosService {
   public getUsuariosPorMatricula(matricula: String){
     return this.httpClient.get(`${this.baseUrl}/usuario/${matricula}`)
   }
+
+  public getResponsablesLlenado(){
+    return this.httpClient.get(`${this.baseUrl}/responsablesDeLlenado`)
+  }
 }
