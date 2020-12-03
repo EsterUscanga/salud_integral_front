@@ -61,11 +61,11 @@
                 </div>
                 <app-calendario></app-calendario>
                 <div class="field">
-                    <label class="label">Clasificación de la enfermedad</label>
+                    <label class="label">Clasificación de motivo de ausencia</label>
                     <div [ngClass]="dropDownActivoEnfermedad ? 'dropdown is-active' : 'dropdown'" >
                         <div class="dropdown-trigger">
                             <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="cambiarEstatusDropdown('enfermedad')">
-                                <span *ngIf="!loValorEnfermedad">Selecciona Enfermedad</span>
+                                <span *ngIf="!loValorEnfermedad">Selecciona Motivo</span>
                                 <span *ngIf="loValorEnfermedad">{{loValorEnfermedad.texto}}</span>
                                 <span class="icon is-small">
                                     <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
@@ -82,9 +82,9 @@
                     </div>    
                 </div>
                 <div class="field">
-                    <label class="label">Descripción detallada de la enfermedad</label>
+                    <label class="label">Descripción detallada de ausencia o enfermedad</label>
                     <div class="control">
-                        <textarea class="textarea" placeholder="Describe detalladamente la enfermedad" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
+                        <textarea class="textarea" placeholder="Describe el motivo de ausencia" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
                     </div>
                 </div>
                 <div class="field is-grouped">
