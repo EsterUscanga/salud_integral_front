@@ -5,6 +5,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UsuariosService } from '../services/usuarios.service';
 import { EnfermedadesService } from '../services/enfermedades.service';
+import { JustificacionFaltasService } from '../services/justificacion-faltas.service';
 
 @Component({
   selector: 'app-justificacion-faltas',
@@ -54,7 +55,8 @@ export class JustificacionFaltasComponent implements OnInit {
   public faTrash = faTrash
 
   constructor(
-    private enfermedadesServicio: EnfermedadesService,
+    private enfermedadesServicio: EnfermedadesService, 
+    private justificacionDeFaltasServicio: JustificacionFaltasService,
     private usuariosServicio: UsuariosService
   ) { }
 
@@ -136,9 +138,19 @@ export class JustificacionFaltasComponent implements OnInit {
   }
 
   public enviarFormularioJustificacionFaltas(){
-    console.log("Cuatrimestre:" + JSON.stringify(this.loValorCuatrimestre))
-    console.log("Enfermedad:" + JSON.stringify(this.loValorEnfermedad))
-    console.log("Descripcion enfermedad:" + JSON.stringify(this.loValorDecripcionEnfermedad))
-
+    this.justificacionDeFaltasServicio.postJustificacionFaltas(this.loValorMatricula, this.loValorCuatrimestre.id, this.loValorEnfermedad.id, this.loValorDecripcionEnfermedad)
+    .subscribe(((data:any) =>{
+      if(data.status){
+        this.loValorMensajeSatisfactorio = data.status
+        this.mensajeSatisfactorio = true
+        this.limpiarValores()
+      }
+    }), (error => {
+      if(error.error){
+        this.loValorMensajeError = error.error
+        this.mensajeError = true
+        this.limpiarValores()
+      }
+    }))
   }
 }

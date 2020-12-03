@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { JustificacionFaltasComponent } from './justificacion-faltas/justificacion-faltas.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { SaludPreventivaComponent } from './salud-preventiva/salud-preventiva.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CalendarioComponent } from './calendario/calendario.component';
     NavigationBarComponent,
     HomeComponent,
     JustificacionFaltasComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    SaludPreventivaComponent
   ],
   imports: [
     BrowserModule,

@@ -59,7 +59,7 @@
                         </div>
                     </div>    
                 </div>
-
+                <app-calendario></app-calendario>
                 <div class="field">
                     <label class="label">Clasificación de la enfermedad</label>
                     <div [ngClass]="dropDownActivoEnfermedad ? 'dropdown is-active' : 'dropdown'" >
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-    <app-calendario></app-calendario>
+
 
     <div class="notification is-success is-light" *ngIf="mensajeSatisfactorio">
         <button class="delete" (click)="cerrarNotificacion('satisfactoria')"></button>

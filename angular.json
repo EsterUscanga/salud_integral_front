@@ -24,6 +24,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bulma/css/bulma.min.css",
+              "src/assets/bulma-calendar.min.css",
               "src/styles.css"
             ],
             "scripts": []
