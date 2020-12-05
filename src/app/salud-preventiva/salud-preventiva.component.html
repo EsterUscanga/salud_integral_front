@@ -1,1 +1,263 @@
-<p>salud-preventiva works!</p>
+<div class="container">
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">Matrícula (alumno)</label>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="160516" maxlength="6" minlength="6" required
+                            [(ngModel)]="loValorMatricula">
+                        <p class="help is-danger" *ngIf="matriculaIncompleta">Matrícula o ID deben tener 6 dígitos</p>
+                        <p class="help is-danger" *ngIf="matriculaNoExiste">Matrícula o ID no existe</p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="obtenerDetallesUsuarioPorMatricula()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faSearch"></fa-icon>
+                                </span>
+                                <span>Buscar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="detallesBandera">
+                <div class="field">
+                    <label class="label">Responsable de llenado</label>
+                    <div [ngClass]="dropDownActivoResponsableLlenado ? 'dropdown is-active' : 'dropdown'" >
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="cambiarEstatusDropdown('responsable')">
+                                <span *ngIf="!loValorResonsable">Selecciona Responsable</span>
+                                <span *ngIf="loValorResonsable">{{loValorResonsable.texto}}</span>
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" *ngFor="let responsableDeLlenado of responsablesDeLlenado; let i = index" [attr.data-index]="i" (click)="modificarValorDropdown(i, 'responsable')">
+                                    {{responsableDeLlenado.nombre}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+
+                <div class="field">
+                    <label class="label">Número de Seguro Social</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorImss" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Nombre</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorNombre" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Área</label>
+                    <div class="control">
+                        <input class="input" [ngModel]="loValorAreaUsuario" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Edad</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorEdad" type="number">
+                        <p class="help is-danger" *ngIf="edadIncorrecta">Ingresar edad correctamente</p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Peso</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorPeso" type="number">
+                        <p class="help is-danger" *ngIf="pesoIncorrecto">Es necesario el peso en kilogramos</p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Talla</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorTalla" type="number">
+                        <p class="help is-danger" *ngIf="tallaIncorrecta">Es necesaria la talla en metros</p>
+                    </div>
+                </div>
+
+                <label class="label">Antecedentes patológicos</label>
+                <div class="field" *ngFor="let enfermedad of antecedentesPatologicos; let i = index">
+                    <label class="checkbox">
+                        <input type="checkbox" (change)="loValorAtencedentesPatologicos[i].id = enfermedad.id; loValorAtencedentesPatologicos[i].seleccionado = !loValorAtencedentesPatologicos[i].seleccionado">
+                        {{ enfermedad.nombre }}
+                    </label>
+                </div>
+
+                <label class="label">Antecedentes familiares</label>
+                <div class="field" *ngFor="let antecedente of antecedentesFamiliares; let i = index">
+                    <label class="checkbox">
+                        <input type="checkbox" (change)="loValorAntecedentesFamiliares[i].id = antecedente.id; loValorAntecedentesFamiliares[i].seleccionado = !loValorAntecedentesFamiliares[i].seleccionado">
+                        {{ antecedente.nombre }}
+                    </label>
+                </div>
+
+                <div class="field">
+                    <label class="label">Grupo Sanguíneo y RH</label>
+                    <div [ngClass]="dropDownActivoGrupoSanguineo ? 'dropdown is-active' : 'dropdown'" >
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="cambiarEstatusDropdown('grupoSanguineo')">
+                                <span *ngIf="!loValorGrupoSanguineo">Selecciona Grupo Sanguíneo y RH</span>
+                                <span *ngIf="loValorGrupoSanguineo">{{loValorGrupoSanguineo.texto}}</span>
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" *ngFor="let grupoSanguineo of gruposSanguineos; let i = index" [attr.data-index]="i" (click)="modificarValorDropdown(i, 'grupoSanguineo')">
+                                    {{grupoSanguineo.nombre}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+
+                <div class="field">
+                    <label class="label">Fuma</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="fuma" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'fuma')"/>
+                            Sí
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="fuma" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'fuma')"/>
+                            NO
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Ingiere bebidas alcohólicas</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="alchol" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'toma')"/>
+                            Sí
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="alchol" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'toma')"/>
+                            NO
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Consumo de otra sustancia</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="otra_sustancia" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'sustancia')"/>
+                            Sí
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="otra_sustancia" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'sustancia')"/>
+                            NO
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">¿Cuál?</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorOtraSustancia" type="text" placeholder="Escriba otra sustancia" [disabled]="!otraSustancia">
+                        <p class="help is-danger" *ngIf="otraSustancia">Escriba otro tipo de sustancia de consumo</p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Disminución visual (Uso de lentes)</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="disminucion_visual" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'disminucion_visual')"/>
+                            Sí
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="disminucion_visual" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'disminucion_visual')"/>
+                            NO
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Número de embarazos</label>
+                    <div class="control">
+                        <input class="input" [(ngModel)]="loValorNumeroEmbarazos" type="number">
+                        <p class="help is-danger" *ngIf="cantidadEmbarazosIncorrecto">Escriba el número de embarazos correctamente</p>
+                    </div>
+                </div>
+
+                <label class="label">Uso de método anticonceptivo</label>
+                <div class="field" *ngFor="let metodoAnticonceptivo of metodosAnticonceptivos; let i = index">
+                    <label class="checkbox">
+                        <input type="checkbox" (change)="loValorMetodosAnticonceptivos[i].id = metodoAnticonceptivo.id; loValorMetodosAnticonceptivos[i].seleccionado = !loValorMetodosAnticonceptivos[i].seleccionado">
+                        {{ metodoAnticonceptivo.nombre }}
+                    </label>
+                </div>
+
+                <div class="field">
+                    <label class="label">Practica Actividad Física</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="actividad_fisica" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'actividad_fisica')"/>
+                            Sí
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="actividad_fisica" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'actividad_fisica')"/>
+                            NO
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link" (click)="enviarFormularioJustificacionFaltas()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                                </span>
+                                <span>Enviar</span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <p class="buttons">
+                            <a class="button is-link is-light" (click)="limpiarValores()">
+                                <span class="icon">
+                                    <fa-icon [icon]="faTrash"></fa-icon>
+                                </span>
+                                <span>Limpiar</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="notification is-success is-light" *ngIf="mensajeSatisfactorio">
+        <button class="delete" (click)="cerrarNotificacion('satisfactoria')"></button>
+        {{loValorMensajeSatisfactorio}}
+    </div>
+      
+      
+    <div class="notification is-danger is-light" *ngIf="mensajeError">
+        <button class="delete" (click)="cerrarNotificacion('error')"></button>
+        {{loValorMensajeError}}
+    </div>
+</div>

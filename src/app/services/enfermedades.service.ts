@@ -15,7 +15,7 @@ export class EnfermedadesService {
     return this.httpClient.get(`${this.baseUrl}/clasificacionesEnfermedades`)
   }
 
-  public getEnfermedadesPatologicas(){
+  public getAntecedentesPatologicos(){
     return this.httpClient.get(`${this.baseUrl}/antecendentesPatologicos`)
   }
 }
