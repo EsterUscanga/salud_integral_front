@@ -1,3 +1,16 @@
+<section class="hero is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+            Justificación de faltas
+        </h1>
+        <h2 class="subtitle">
+            Este formulario recopila automáticamente las direcciones de correo electrónico de los usuarios de Universidad Politécnica de Aguascalientes.
+        </h2>
+      </div>
+    </div>
+</section>
+
 <div class="container">
 
     <div class="columns">
@@ -59,7 +72,6 @@
                         </div>
                     </div>    
                 </div>
-                <app-calendario></app-calendario>
                 <div class="field">
                     <label class="label">Clasificación de motivo de ausencia</label>
                     <div [ngClass]="dropDownActivoEnfermedad ? 'dropdown is-active' : 'dropdown'" >
@@ -84,9 +96,20 @@
                 <div class="field">
                     <label class="label">Descripción detallada de ausencia o enfermedad</label>
                     <div class="control">
-                        <textarea class="textarea" placeholder="Describe el motivo de ausencia" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
+                        <textarea class="input" placeholder="Describe el motivo de ausencia" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="column">
+            <div *ngIf="detallesBandera">
+                <div class="field">
+                    <label class="label">Seleccione día/días de ausencia</label>
+                    <div class="control">
+                        <app-calendario></app-calendario>
+                    </div>
+                </div>
+                
                 <div class="field is-grouped">
                     <div class="control">
                         <p class="buttons">
