@@ -1,7 +1,7 @@
 <section class="hero is-bold">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">
+        <h1 class="title has-text-black">
             Justificación de faltas
         </h1>
         <h2 class="subtitle">
@@ -18,7 +18,10 @@
             <div class="field">
                 <label class="label">Matrícula (alumno)</label>
                 <div class="field is-grouped">
-                    <div class="control">
+                    <div class="control has-icons-left">
+                        <span class="icon is-small is-right">
+                         <p class="has-text-grey">UP</p>
+                        </span>
                         <input class="input" type="text" placeholder="160516" maxlength="6" minlength="6" required
                             [(ngModel)]="loValorMatricula">
                         <p class="help is-danger" *ngIf="matriculaIncompleta">Matrícula o ID deben tener 6 dígitos</p>

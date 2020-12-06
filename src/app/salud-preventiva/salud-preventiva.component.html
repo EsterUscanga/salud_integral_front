@@ -1,8 +1,8 @@
 <section class="hero is-bold">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">
-            Formulario de Evaluación de Salud Preventiva
+        <h1 class="title has-text-black">
+            Evaluación de Salud Preventiva
         </h1>
         <h2 class="subtitle">
             Este cuestionario se estará aplicando para las atenciones al usuario en revisiones generales de glucosa, tensión arterial, colesterol y peso.
@@ -14,9 +14,12 @@
     <div class="columns">
         <div class="column">
             <div class="field">
-                <label class="label">Matrícula (alumno)</label>
+                <label class="label">Matrícula (alumno) ID (Docente/Admin)</label>
                 <div class="field is-grouped">
-                    <div class="control">
+                    <div class="control has-icons-left">
+                        <span class="icon is-small is-right">
+                         <p class="has-text-grey">UP</p>
+                        </span>
                         <input class="input" type="text" placeholder="160516" maxlength="6" minlength="6" required
                             [(ngModel)]="loValorMatricula">
                         <p class="help is-danger" *ngIf="matriculaIncompleta">Matrícula o ID deben tener 6 dígitos</p>
@@ -88,36 +91,82 @@
 
                 <div class="field">
                     <label class="label">Peso</label>
-                    <div class="control">
+                    <div class="control has-icons-right">
                         <input class="input" [(ngModel)]="loValorPeso" type="number">
+                        <span class="icon is-small is-right">
+                            <i>kg</i>
+                        </span>
                         <p class="help is-danger" *ngIf="pesoIncorrecto">Es necesario el peso en kilogramos</p>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">Talla</label>
-                    <div class="control">
+                    <div class="control has-icons-right">
                         <input class="input" [(ngModel)]="loValorTalla" type="number">
+                        <span class="icon is-small is-right">
+                            <i>m</i>
+                        </span>
                         <p class="help is-danger" *ngIf="tallaIncorrecta">Es necesaria la talla en metros</p>
                     </div>
                 </div>
 
                 <label class="label">Antecedentes patológicos</label>
-                <div class="field" *ngFor="let enfermedad of antecedentesPatologicos; let i = index">
-                    <label class="checkbox">
-                        <input type="checkbox" (change)="loValorAtencedentesPatologicos[i].id = enfermedad.id; loValorAtencedentesPatologicos[i].seleccionado = !loValorAtencedentesPatologicos[i].seleccionado">
-                        {{ enfermedad.nombre }}
-                    </label>
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                            <span>Selecciona Antecedentes patológicos</span>
+                            <span class="icon is-small">
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <div class="field" *ngFor="let enfermedad of antecedentesPatologicos; let i = index">
+                                    <label class="checkbox">
+                                        <input type="checkbox" (change)="loValorAtencedentesPatologicos[i].id = enfermedad.id; loValorAtencedentesPatologicos[i].seleccionado = !loValorAtencedentesPatologicos[i].seleccionado">
+                                        {{ enfermedad.nombre }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <br> <br> 
                 <label class="label">Antecedentes familiares</label>
-                <div class="field" *ngFor="let antecedente of antecedentesFamiliares; let i = index">
-                    <label class="checkbox">
-                        <input type="checkbox" (change)="loValorAntecedentesFamiliares[i].id = antecedente.id; loValorAntecedentesFamiliares[i].seleccionado = !loValorAntecedentesFamiliares[i].seleccionado">
-                        {{ antecedente.nombre }}
-                    </label>
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                            <span>Selecciona Antecedentes familiares</span>
+                            <span class="icon is-small">
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <div class="field" *ngFor="let antecedente of antecedentesFamiliares; let i = index">
+                                    <label class="checkbox">
+                                        <input type="checkbox"
+                                            (change)="loValorAntecedentesFamiliares[i].id = antecedente.id; loValorAntecedentesFamiliares[i].seleccionado = !loValorAntecedentesFamiliares[i].seleccionado">
+                                        {{ antecedente.nombre }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+            </div>
+        </div>
+        <div class="column">
+            <div *ngIf="detallesBandera">
                 <div class="field">
                     <label class="label">Grupo Sanguíneo y RH</label>
                     <div [ngClass]="dropDownActivoGrupoSanguineo ? 'dropdown is-active' : 'dropdown'" >
@@ -213,14 +262,31 @@
                 </div>
 
                 <label class="label">Uso de método anticonceptivo</label>
-                <div class="field" *ngFor="let metodoAnticonceptivo of metodosAnticonceptivos; let i = index">
-                    <label class="checkbox">
-                        <input type="checkbox" (change)="loValorMetodosAnticonceptivos[i].id = metodoAnticonceptivo.id; loValorMetodosAnticonceptivos[i].seleccionado = !loValorMetodosAnticonceptivos[i].seleccionado">
-                        {{ metodoAnticonceptivo.nombre }}
-                    </label>
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                            <span>Selecciona método anticonceptivo</span>
+                            <span class="icon is-small">
+                                <span class="icon is-small">
+                                    <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <div class="field" *ngFor="let metodoAnticonceptivo of metodosAnticonceptivos; let i = index">
+                                    <label class="checkbox">
+                                        <input type="checkbox" (change)="loValorMetodosAnticonceptivos[i].id = metodoAnticonceptivo.id; loValorMetodosAnticonceptivos[i].seleccionado = !loValorMetodosAnticonceptivos[i].seleccionado">
+                                        {{ metodoAnticonceptivo.nombre }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="field">
+                <div class="field" style="padding-top: 2%;">
                     <label class="label">Practica Actividad Física</label>
                     <div class="control">
                         <label class="radio">
