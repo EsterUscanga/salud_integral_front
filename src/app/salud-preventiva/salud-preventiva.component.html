@@ -57,7 +57,8 @@
                                 </a>
                             </div>
                         </div>
-                    </div>    
+                    </div> 
+                    <p class="help is-danger" *ngIf="responsableLlenadoSinSeleccion">Selecciona un responsable de llenado</p>   
                 </div>
 
                 <div class="field">
@@ -136,7 +137,8 @@
                         </div>
                     </div>
                 </div>
-                <br> <br> 
+                <p class="help is-danger" *ngIf="antecedentesPatologicosSinSeleccion">Selecciona un atecendente o la opción "Ninguna"</p>
+                <br *ngIf="!antecedentesPatologicosSinSeleccion"> <br> 
                 <label class="label">Antecedentes familiares</label>
                 <div class="dropdown is-hoverable">
                     <div class="dropdown-trigger">
@@ -163,6 +165,7 @@
                         </div>
                     </div>
                 </div>
+                <p class="help is-danger" *ngIf="antecedentesFamiliaresSinSeleccion">Selecciona un atecendente o la opción "Ninguna"</p>
             </div>
         </div>
         <div class="column">
@@ -186,18 +189,19 @@
                                 </a>
                             </div>
                         </div>
-                    </div>    
+                    </div>  
+                    <p class="help is-danger" *ngIf="grupoSanguineoSinSeleccion">Selecciona un grupo sanguíneo</p>  
                 </div>
 
                 <div class="field">
                     <label class="label">Fuma</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="fuma" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'fuma')"/>
+                            <input type="radio" [checked]="loValorFuma" name="fuma" (change)="loValorFuma = !loValorFuma"/>
                             Sí
                         </label>
                         <label class="radio">
-                            <input type="radio" name="fuma" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'fuma')"/>
+                            <input type="radio" [checked]="!loValorFuma" name="fuma" (change)="loValorFuma = !loValorFuma"/>
                             NO
                         </label>
                     </div>
@@ -207,11 +211,11 @@
                     <label class="label">Ingiere bebidas alcohólicas</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="alchol" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'toma')"/>
+                            <input type="radio" name="alchol" [checked]="loValorIngiereBebidasAlcoholicas" (change)="loValorIngiereBebidasAlcoholicas = !loValorIngiereBebidasAlcoholicas"/>
                             Sí
                         </label>
                         <label class="radio">
-                            <input type="radio" name="alchol" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'toma')"/>
+                            <input type="radio" name="alchol" [checked]="!loValorIngiereBebidasAlcoholicas" (change)="loValorIngiereBebidasAlcoholicas = !loValorIngiereBebidasAlcoholicas"/>
                             NO
                         </label>
                     </div>
@@ -221,11 +225,11 @@
                     <label class="label">Consumo de otra sustancia</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="otra_sustancia" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'sustancia')"/>
+                            <input type="radio" name="otra_sustancia" [checked]="otraSustancia" (change)="otraSustancia = !otraSustancia">
                             Sí
                         </label>
                         <label class="radio">
-                            <input type="radio" name="otra_sustancia" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'sustancia')"/>
+                            <input type="radio" name="otra_sustancia" [checked]="!otraSustancia" (change)="otraSustancia = !otraSustancia"/>
                             NO
                         </label>
                     </div>
@@ -243,11 +247,11 @@
                     <label class="label">Disminución visual (Uso de lentes)</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="disminucion_visual" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'disminucion_visual')"/>
+                            <input type="radio" name="disminucion_visual" [checked]="loValorDisminucionVisual" (change)="loValorDisminucionVisual = !loValorDisminucionVisual"/>
                             Sí
                         </label>
                         <label class="radio">
-                            <input type="radio" name="disminucion_visual" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'disminucion_visual')"/>
+                            <input type="radio" name="disminucion_visual" [checked]="!loValorDisminucionVisual" (change)="loValorDisminucionVisual = !loValorDisminucionVisual"/>
                             NO
                         </label>
                     </div>
@@ -286,24 +290,31 @@
                         </div>
                     </div>
                 </div>
+                <p class="help is-danger" *ngIf="metodoAnticonceptivoSinSeleccion">Selecciona un método anticonceptivo o la opción "Ninguno"</p>
+
                 <div class="field" style="padding-top: 2%;">
                     <label class="label">Practica Actividad Física</label>
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="actividad_fisica" value="0" (change)="guardarSeleccionBotonRadio($event.target.value, 'actividad_fisica')"/>
+                            <input type="radio" name="actividad_fisica" [checked]="loValorPracticaActividadFisica" (change)="loValorPracticaActividadFisica = !loValorPracticaActividadFisica"/>
                             Sí
                         </label>
                         <label class="radio">
-                            <input type="radio" name="actividad_fisica" value="1" (change)="guardarSeleccionBotonRadio($event.target.value, 'actividad_fisica')"/>
+                            <input type="radio" name="actividad_fisica" [checked]="!loValorPracticaActividadFisica" (change)="loValorPracticaActividadFisica = !loValorPracticaActividadFisica"/>
                             NO
                         </label>
                     </div>
                 </div>
 
+                <div class="notification is-warning is-light" *ngIf="mensajeAlerta">
+                    <button class="delete" (click)="cerrarNotificacion('alerta')"></button>
+                    {{loValorMensajeAlerta}}
+                </div>
+
                 <div class="field is-grouped">
                     <div class="control">
                         <p class="buttons">
-                            <a class="button is-link" (click)="enviarFormularioJustificacionFaltas()">
+                            <a class="button is-link" (click)="enviarFormularioSaludPreventiva()">
                                 <span class="icon">
                                     <fa-icon [icon]="faPaperPlane"></fa-icon>
                                 </span>

@@ -6,6 +6,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UsuariosService } from '../services/usuarios.service';
 import { EnfermedadesService } from '../services/enfermedades.service';
 import { SaludPreventivaService } from '../services/salud-preventiva.service'
+import { element } from 'protractor';
+import { isGeneratedFile } from '@angular/compiler/src/aot/util';
 
 @Component({
   selector: 'app-salud-preventiva',
@@ -30,27 +32,40 @@ export class SaludPreventivaComponent implements OnInit {
   public loValorAntecedentesFamiliares: [{ id: number, seleccionado: boolean }] = [{ id: 0, seleccionado: true }]
   public loValorMetodosAnticonceptivos: [{ id: number, seleccionado: boolean }] = [{ id: 0, seleccionado: true }]
   public loValorFuma: Boolean = false
-  public loValorIngerieBebidasAlcoholicas: Boolean = false
-  public loValorOtraSustancia: String
-  public loValorNumeroEmbarazos: Number = 0
-  public loValorDisminucionVisual: Boolean
-  public loValorPracticaActividadFisica: Boolean
+  public loValorIngiereBebidasAlcoholicas: Boolean = false
+  public loValorOtraSustancia: String = ''
+  public loValorNumeroEmbarazos: number = 0
+  public loValorDisminucionVisual: Boolean = false
+  public loValorPracticaActividadFisica: Boolean = true
 
+
+  public loStringAntecedentesPatologicos = ''
+  public loStringAntecedentesfamiliares = ''
+  public loStringMetodosAnticonceptivos = ''
 
   //LOGIC
-  public otraSustancia: Boolean
+  public otraSustancia: Boolean = false
   public detallesBandera: Boolean
   public matriculaIncompleta: Boolean
   public matriculaNoExiste: Boolean
   public mensajeSatisfactorio: Boolean
   public mensajeError: Boolean
+  public mensajeAlerta: Boolean
+  public responsableLlenadoSinSeleccion: Boolean
   public tallaIncorrecta: Boolean
   public pesoIncorrecto: Boolean
   public edadIncorrecta: Boolean
   public cantidadEmbarazosIncorrecto: Boolean
   public otraSustanciaVacio: Boolean
+  public antecedentesPatologicosSinSeleccion: Boolean
+  public antecedentesFamiliaresSinSeleccion: Boolean
+  public grupoSanguineoSinSeleccion: Boolean
+  public metodoAnticonceptivoSinSeleccion: Boolean
+
   public loValorMensajeSatisfactorio: String
   public loValorMensajeError: String
+  public loValorMensajeAlerta: String
+
   public dropDownActivoResponsableLlenado: Boolean = false
   public dropDownActivoGrupoSanguineo: Boolean = false
   public dropDownActivoAntecedentesFamiliares: Boolean = false
@@ -165,6 +180,8 @@ export class SaludPreventivaComponent implements OnInit {
         break
       case 'error': this.mensajeError = false
         break
+      case 'alerta': this.mensajeAlerta = false
+        break
     }
   }
 
@@ -197,58 +214,131 @@ export class SaludPreventivaComponent implements OnInit {
     this.cambiarEstatusDropdown(selector)
   }
 
-  public enviarFormularioJustificacionFaltas() {
+  public enviarFormularioSaludPreventiva() {
+
+    if(this.validarFormulario()){
+      this.mensajeAlerta = false
+      this.saludPreventivaServicio.postSaludPreventiva(this.loValorMatricula, this.loValorResonsable.id, 
+        this.loValorEdad, this.loValorPeso, this.loValorTalla, this.loValorGrupoSanguineo.id, this.loValorFuma,
+        this.loValorIngiereBebidasAlcoholicas, this.loValorOtraSustancia, this.loValorDisminucionVisual, 
+        this.loValorNumeroEmbarazos, this.loValorPracticaActividadFisica, this.loStringAntecedentesPatologicos, this.loStringAntecedentesfamiliares, this.loStringMetodosAnticonceptivos)
+      .subscribe(((data:any) =>{
+        if(data.status){
+          this.loValorMensajeSatisfactorio = data.status
+          this.mensajeSatisfactorio = true
+          this.limpiarValores()
+        }
+      }), (error => {
+        if(error.error){
+          this.loValorMensajeError = error.error      
+          this.mensajeError = true
+          this.limpiarValores()
+        }
+      }))
+    } else {
+      this.loValorMensajeAlerta = "No se han llenado todos los campos."
+      this.mensajeAlerta = true
+    }   
+  }
+
+  public validarFormulario(): boolean {
+    this.responsableLlenadoSinSeleccion = false
     this.pesoIncorrecto = false
     this.tallaIncorrecta = false
     this.edadIncorrecta = false
+    this.antecedentesPatologicosSinSeleccion = false
+    this.antecedentesFamiliaresSinSeleccion = false
+    this.grupoSanguineoSinSeleccion = false
     this.otraSustanciaVacio = false
+    this.metodoAnticonceptivoSinSeleccion = false
+
+    this.loStringAntecedentesPatologicos = ''
+    this.loStringAntecedentesfamiliares = ''
+    this.loStringMetodosAnticonceptivos = ''
+
+
+    if(!this.loValorResonsable){
+      this.responsableLlenadoSinSeleccion = true
+      return false
+    }
+
+    if (this.loValorEdad < 17 || this.loValorEdad > 120) {
+      this.edadIncorrecta = true
+      return false
+    }
 
     if (this.loValorPeso < 20 || this.loValorPeso > 300) {
       this.pesoIncorrecto = true
+      return false
     }
 
     if (this.loValorTalla < 0.4 || this.loValorTalla > 2.5) {
       this.tallaIncorrecta = true
+      return false
     }
 
-    if (this.loValorEdad < 18 || this.loValorEdad > 120) {
-      this.edadIncorrecta = true
+    this.loValorAtencedentesPatologicos.forEach((element: { id: number, seleccionado: boolean }, index: number) => {
+      if(element.seleccionado){
+        if(index == 0) {
+          this.loStringAntecedentesPatologicos = `${element.id}`
+        } else {
+          this.loStringAntecedentesPatologicos = `${this.loStringAntecedentesPatologicos},${element.id}`
+        }
+      }
+    })
+
+    if(this.loStringAntecedentesPatologicos.length < 1){
+      this.antecedentesPatologicosSinSeleccion = true
+      return false
+    }
+
+    this.loValorAntecedentesFamiliares.forEach((element: { id: number, seleccionado: boolean }, index: number) => {
+      if(element.seleccionado){
+        if(index == 0) {
+          this.loStringAntecedentesfamiliares = `${element.id}`
+        } else {
+          this.loStringAntecedentesfamiliares = `${this.loStringAntecedentesfamiliares},${element.id}`
+        }
+      }
+    })
+
+    if(this.loStringAntecedentesfamiliares.length < 1){
+      this.antecedentesFamiliaresSinSeleccion = true
+      return false
+    }
+
+    if(!this.loValorGrupoSanguineo){
+      this.grupoSanguineoSinSeleccion = true
+      return false
     }
 
     if (this.otraSustancia)
       if (this.loValorOtraSustancia.length < 4) {
         this.otraSustanciaVacio = true
+        return false
       }
 
     if (this.loValorNumeroEmbarazos < 0 || this.loValorNumeroEmbarazos > 20) {
       this.cantidadEmbarazosIncorrecto = true
+      return false
     }
 
-  }
+    this.loValorMetodosAnticonceptivos.forEach((element: { id: number, seleccionado: boolean }, index: number) => {
+      if(element.seleccionado){
+        if(index == 0) {
+          this.loStringMetodosAnticonceptivos = `${element.id}`
+        } else {
+          this.loStringMetodosAnticonceptivos = `${this.loStringMetodosAnticonceptivos},${element.id}`
+        }
+      }
+    })
 
-  public guardarSeleccionBotonRadio(valorSeleccionado: any, radioSeleccionado: String) {
-    switch (radioSeleccionado) {
-      case 'fuma':
-        this.loValorFuma = valorSeleccionado == '0'
-        break
-
-      case 'toma':
-        this.loValorIngerieBebidasAlcoholicas = valorSeleccionado == '0'
-        break
-
-      case 'sustancia':
-        this.otraSustancia = valorSeleccionado == '0'
-        this.loValorOtraSustancia = valorSeleccionado == '1' ? "" : this.loValorOtraSustancia
-        break
-
-      case 'disminucion_visual':
-        this.loValorDisminucionVisual = valorSeleccionado == '0'
-        break
-
-      case 'actividad_fisica':
-        this.loValorPracticaActividadFisica = valorSeleccionado == '0'
-        break
+    if(this.loStringMetodosAnticonceptivos.length < 1){
+      this.metodoAnticonceptivoSinSeleccion = true
+      return false
     }
+
+    return true
   }
 
 }

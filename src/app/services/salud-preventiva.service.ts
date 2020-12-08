@@ -23,4 +23,28 @@ export class SaludPreventivaService {
     return this.httpClient.get(`${this.baseUrl}/metodosAnticonceptivos`)
   }
 
+  public postSaludPreventiva(matricula: String, responsableDeLlenado: number, edad: number, peso: number, 
+    talla: number, grupoSanguineo: number, fuma: Boolean, ingiereBebidasAlcoholicas: Boolean, ingieraOtraSustancia: String,
+    usaLentes: Boolean, numeroEmbarazos: number, actividadFisica: Boolean, antecedentesPatologicos: String,
+    antecedentesFamiliares: String, metodosAnticonceptivos: String){
+    return this.httpClient.post(`${this.baseUrl}/saludPreventivaFormulario`, 
+    {
+      matricula,
+      responsableDeLlenado,
+      edad,
+      peso,
+      talla,
+      grupoSanguineo,
+      fuma,
+      ingiereBebidasAlcoholicas,
+      ingieraOtraSustancia,
+      usaLentes,
+      numeroEmbarazos,
+      actividadFisica,
+      antecedentesPatologicos,
+      antecedentesFamiliares,
+      metodosAnticonceptivos
+    })
+  }
+
 }
