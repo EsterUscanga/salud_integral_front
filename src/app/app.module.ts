@@ -1,3 +1,5 @@
+import '@angular/compiler'
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -13,6 +15,11 @@ import { JustificacionFaltasComponent } from './justificacion-faltas/justificaci
 import { CalendarioComponent } from './calendario/calendario.component';
 import { SaludPreventivaComponent } from './salud-preventiva/salud-preventiva.component';
 
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -29,7 +36,12 @@ import { SaludPreventivaComponent } from './salud-preventiva/salud-preventiva.co
     AppRoutingModule,
     FormsModule,
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NoopAnimationsModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

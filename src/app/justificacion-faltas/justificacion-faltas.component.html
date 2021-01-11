@@ -96,20 +96,49 @@
                         </div>
                     </div>    
                 </div>
+            </div>
+        </div>
+        <div class="column">
+            <div *ngIf="detallesBandera">
+                <div class="field">
+                    <label class="label">Comprobante de Justificación</label>
+                    <div class="control">
+                        <div class="file has-name">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="comprobante" (change)="manejarArchivo($event.target.files)">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <fa-icon [icon]="faUpload"></fa-icon>
+                                    </span>
+                                    <span class="file-label">
+                                    Escoje una imágen...
+                                    </span>
+                                </span>
+                                <span class="file-name">
+                                    {{nombreArchivo}}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>        
                 <div class="field">
                     <label class="label">Descripción detallada de ausencia o enfermedad</label>
                     <div class="control">
                         <textarea class="input" placeholder="Describe el motivo de ausencia" [(ngModel)]="loValorDecripcionEnfermedad" minlength="10"></textarea>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="column">
-            <div *ngIf="detallesBandera">
                 <div class="field">
                     <label class="label">Seleccione día/días de ausencia</label>
                     <div class="control">
-                        <app-calendario></app-calendario>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Seleccione un rango</mat-label>
+                            <mat-date-range-input [rangePicker]="picker" [min]="fechaMinima" [max]="fechaMaxima">
+                              <input matStartDate placeholder="Fecha Inicio" [(ngModel)]="loValorFechaInicio">
+                              <input matEndDate placeholder="Fecha Fin" [(ngModel)]="loValorFechaFin">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                          </mat-form-field>
                     </div>
                 </div>
                 

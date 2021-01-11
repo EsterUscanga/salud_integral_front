@@ -3,6 +3,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { UsuariosService } from '../services/usuarios.service';
 import { EnfermedadesService } from '../services/enfermedades.service';
 import { JustificacionFaltasService } from '../services/justificacion-faltas.service';
@@ -23,8 +24,13 @@ export class JustificacionFaltasComponent implements OnInit {
   public loValorCuatrimestre: {id: number, texto: String}
   public loValorEnfermedad: {id: number, texto: String}
   public loValorDecripcionEnfermedad: String
+  public loValorFechaInicio: Date
+  public loValorFechaFin: Date
+  public loValorArchivo: String
 
   //LOGIC
+  public fechaMinima = new Date();
+  public fechaMaxima = new Date(2020,12,12);
   public detallesBandera: Boolean
   public matriculaIncompleta: Boolean
   public matriculaNoExiste: Boolean
@@ -34,7 +40,7 @@ export class JustificacionFaltasComponent implements OnInit {
   public loValorMensajeError: String
   public dropDownActivoCuatrimestre: Boolean = false
   public dropDownActivoEnfermedad: Boolean = false
-
+  public nombreArchivo: String
   public enfermedades: any
   public cuatrimestres: String[] = ["Propedeutico", 
                                    "1° Cuatrimestre",
@@ -53,14 +59,16 @@ export class JustificacionFaltasComponent implements OnInit {
   public faAngleDown = faAngleDown
   public faPaperPlane = faPaperPlane
   public faTrash = faTrash
+  public faUpload = faUpload
 
   constructor(
     private enfermedadesServicio: EnfermedadesService, 
     private justificacionDeFaltasServicio: JustificacionFaltasService,
-    private usuariosServicio: UsuariosService
+    private usuariosServicio: UsuariosService,
   ) { }
 
   ngOnInit(): void {
+    console.log(this.fechaMinima)
     this.enfermedadesServicio.getClasificacionEnfermedades()
     .subscribe((data:any) =>{
       this.enfermedades = data
@@ -138,7 +146,7 @@ export class JustificacionFaltasComponent implements OnInit {
   }
 
   public enviarFormularioJustificacionFaltas(){
-    this.justificacionDeFaltasServicio.postJustificacionFaltas(this.loValorMatricula, this.loValorCuatrimestre.id, this.loValorEnfermedad.id, this.loValorDecripcionEnfermedad)
+    this.justificacionDeFaltasServicio.postJustificacionFaltas(this.loValorMatricula, this.loValorCuatrimestre.id, this.loValorEnfermedad.id, this.loValorDecripcionEnfermedad, this.loValorArchivo, this.loValorFechaInicio, this.loValorFechaFin)
     .subscribe(((data:any) =>{
       if(data.status){
         this.loValorMensajeSatisfactorio = data.status
@@ -153,4 +161,20 @@ export class JustificacionFaltasComponent implements OnInit {
       }
     }))
   }
+
+  public manejarArchivo(archivo: File) {
+    const archivoObtenido = archivo[0]
+    this.nombreArchivo = archivo[0].name
+
+    if (archivoObtenido) {
+      let lector = new FileReader()
+      lector.onload = this._manejarArchivo.bind(this)
+      lector.readAsBinaryString(archivoObtenido)
+    }
+  }
+
+  _manejarArchivo(eventoLector: any) {
+    let cadenaBinaria = eventoLector.target.result;
+    this.loValorArchivo= btoa(cadenaBinaria);
+   }
 }

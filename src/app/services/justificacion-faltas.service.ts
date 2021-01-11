@@ -10,14 +10,17 @@ export class JustificacionFaltasService {
 
   constructor (private httpClient: HttpClient) { }
 
-  public postJustificacionFaltas(matricula: String, cuatrimestre: number, clasificacionEnfermedad: number, descripcionEnfermedad: String){
+  public postJustificacionFaltas(matricula: String, cuatrimestre: number, clasificacionEnfermedad: number, descripcionEnfermedad: String, comprobante: String, fechaInicio: Date, fechaFin: Date){
     return this.httpClient.post(
       `${this.baseUrl}/justificacionFaltasFormulario`, 
       {
         matricula,
         cuatrimestre,
         clasificacionEnfermedad,
-        descripcionEnfermedad
+        descripcionEnfermedad,
+        comprobante,
+        fechaInicio,
+        fechaFin
       })
   
   }

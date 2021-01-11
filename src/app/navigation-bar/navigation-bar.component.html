@@ -13,11 +13,26 @@
 
     <div class="navbar-menu" #navMenu>
         <div class="navbar-start">
-
             <a class="navbar-item" routerLink="/atencion-nutricional" routerLinkActive="active">Atención Nutricional</a>
             <a class="navbar-item" routerLink="/justificacion-faltas" routerLinkActive="active">Justificación de Faltas</a>
             <a class="navbar-item" routerLink="/salud-preventiva" routerLinkActive="active">Salud Preventiva</a>
-    
         </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="field is-grouped">
+                <p class="control">
+                  <a class="button is-link">
+                    <span>
+                        Nuevo
+                    </span>
+                    <span class="icon">
+                        <fa-icon [icon]="faUserPlus"></fa-icon>
+                    </span>
+                  </a>
+                </p>
+              </div>
+            </div>
+        </div>            
     </div>
 </nav>
